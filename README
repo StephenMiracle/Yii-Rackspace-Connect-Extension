@@ -22,6 +22,8 @@ Install
 		
 3. Thats It. You've Successfully Installed the Yii Rackspace Connect Extension. Now to move to examples.
 * You will want to insert your rackspace login and API key into the correct value where the uppercase login and key should be your info.
+
+
 Requirements
 ------------------------------------------------------------------------
  [mandatory] PHP version 5.x (developed against 5.2.0)
@@ -100,7 +102,7 @@ This is a very solid and good start to a Rackspace cloud file extension but it d
 
 LICENSING
 ------------------------------------------------------------------------------------------------------------------------------
-Basically, I am attributing 'I could care less' policy with what you do with it but I'll choose the standard MIT license since this probably isn't won't work in legal circles.
+Basically, I am attributing 'I could care less' policy with what you do with it but I'll choose the standard MIT license since this probably won't work in legal circles.
 
 	/* Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php */ 
 	
