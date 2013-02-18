@@ -1,9 +1,9 @@
 {
-    "name": "omissis/php-cloudfiles",
+    "name": "rackspace/php-cloudfiles",
     "type": "library",
     "description": "PHP language bindings for Cloud Files API",
     "keywords": ["Rackspace", "Cloud Files", "RSCF", "PHP"],
-    "homepage": "https://github.com/omissis/php-cloudfiles",
+    "homepage": "https://github.com/rackspace/php-cloudfiles",
     "authors": [
         {
             "name": "Rackspace",
@@ -22,6 +22,5 @@
     },
     "autoload": {
         "files": ["cloudfiles.php"]
-    },
-    "include_path" : ["."]
+    }
 }
