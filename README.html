@@ -1,0 +1,109 @@
+   Yii Rackspace Connect Extension
+   ========================================================================
+     This extension makes it easy to upload and view files from Rackspace CloudFiles with Yii PHP Framework.
+  
+     Please see http://www.rackspacecloud.com/ for more information regarding the
+     Cloud Files storage system.
+  
+   Install
+   ------------------------------------------------------------------------
+    1. Extract this archive to your Extensions Folder
+  	2. Modify Your Yii App Main Config File (ex: APP/protected/config/main.php)
+
+		Add The Following Code Inside Your Application Components Array
+		
+		'rackspaceconnect'=>array('class' => 'ext.RackspaceConnect.RackspaceConnect',
+                    'login'=>'LOGIN', // Insert Your Rackspace Login Here
+                    'key'=>'KEY'),  // Insert Your Rackspace API Key here
+					
+		The Array Begins Like:
+				// application components
+			'components'=>array(
+			
+	3. Thats It. You've Successfully Installed the Yii Rackspace Connect Extension. Now to move to examples.
+	* You will want to insert your rackspace login and API key into the correct value where the uppercase login and key should be your info.
+   Requirements
+   ------------------------------------------------------------------------
+     [mandatory] PHP version 5.x (developed against 5.2.0)
+     [mandatory] PHP's cURL module
+     [mandatory] PHP enabled with mbstring (multi-byte string) support
+     [suggested] PEAR FileInfo module (for Content-Type detection)
+  
+   Examples
+   ------------------------------------------------------------------------
+    Currently there are 2 uses for this extension. You can add files to a Rackspace Cloud container and you can view them. We will need to add a method to delete files.
+	
+	Uploading Files to Rackspace File Container
+	------------------------------------------
+	  Lets say you have a file upload form that you'd like to use to add the files to Rackspace.
+	  
+	  1. Go to your Controller's actionCreate method.
+	  2. Add the following code.
+		
+		 $model->file=CUploadedFile::getInstance($model,'file'); // 'file' is the name of file input field I have uploaded
+                        if($model->save()){
+                                if (isset($model->file)){
+				$target_path = $model->file->getName();  // This sets the new file name as the one uploaded. You can change
+                                $model->file->saveAs($target_path);  // You MUST upload to your server first
+                                Yii::app()->rackspaceconnect->upload('teepopz2', $target_path); // Replace CONTAINER with your desired container
+								}
+                                $this->redirect(array('view','id'=>$model->id));
+                        }
+	  
+	  3. Thats it.
+	  
+	  * Yii::app()->rackspaceconnect->upload($container, $file); //Function that uploads to Rackspace Container
+	  
+	
+	Viewing and Retrieving Files from Container
+	-------------------------------------------
+	
+	1. Add the following function into any view file.
+		Yii::app()->rackspaceconnect->run($container);
+
+	* This grabs all the files inside of the container as an array. You will need a foreach, for or while loop to display them.
+	
+		/* Display as a list */
+		$myContainer = Yii::app()->rackspaceconect->run($container); // Replace $container with desired container.. 'siteContainer'
+		echo '<ul>';
+		foreach ($myContainer as $file){
+			echo '<li>'.$file.'</li>';
+			}
+		echo '</ul>';
+		
+		/* Grab a Single file */
+		$myContainer = Yii::app()->rackspaceconnnect->run($container);
+		$fileName = 'myFile.jpg';
+		foreach ($myContainer as $file){
+			if($file == $fileName) echo $file; // Echoes the filename. Doesn't display the file
+			}
+		// You can have several ways to grab single files. We will also want to write a new function to grab just a single file.
+		
+		/* Display all images */
+		$myContainer = Yii::app()->rackspaceconnect->run($container);
+		$containerUrl = 'http://containerurl' // Replace with your Container URL
+		foreach($myContainer as $file){
+			if(strripos($file, '.jpg') !== false)
+				echo '<img src="'.$containerUrl.'/'.$file.'" alt="'.$file.'" />';
+				}
+		// Note that this simply retrieves and displays the images. You'll want to play with the formatting and how you want to view the images.
+		
+		
+	TODO
+	------------------------------------------------------------------------------------------------------------------------------
+	This is a very solid and good start to a Rackspace cloud file extension but it definitely can be developed more. Here are some of my thoughts.
+	
+	1. Method to delete files.
+	2. Method to call single files using arguments.
+	3. Improve updating method to check if file exist and possibly rename file.
+	
+	
+	LICENSING
+	------------------------------------------------------------------------------------------------------------------------------
+	Basically, I am attributing 'I could care less' policy with what you do with it but I'll choose the standard MIT license since this probably isn't won't work in legal circles.
+
+		/* Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php */ 
+		
+CONTACT
+-------------------------------------------------------------------------------
+My name is Stephen Miracle and you may contact me via my website at http://MiracleSites.com if you have any questions.

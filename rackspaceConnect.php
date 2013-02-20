@@ -16,14 +16,15 @@ class RackspaceConnect extends CApplicationComponent{
      * @param string $login the rackspace login
      * @param string $key the rackspace api key
      */
-    public function authenticate($login = '', $key = ''){ 
-        require_once 'php-cloudfiles-master/cloudfiles.php';
+    public function authenticate($login, $key){ 
+        require_once __DIR__.'/php-cloudfiles-master/cloudfiles.php';
         $login = $this->login;
         $key = $this->key;
         $auth = new CF_Authentication($login,$key);
+        $auth->ssl_use_cabundle(__DIR__.'/cacert.pem');
         $auth->authenticate();
         $conn = new CF_Connection($auth);
-        return $conn;
+       return $conn;
     }
     /**
      * run
@@ -33,10 +34,9 @@ class RackspaceConnect extends CApplicationComponent{
      * @param string $container this is the container you want to grab
      */
     public function run($container){
-        if (empty($container)) $container = 'teepopz1'; //Default container
-        $cloudContainer = $this->authenticate()->get_container($container);    
-        $cloudFiles = $cloudContainer->get_objects();
-        return $cloudFiles;
+       $cloudContainer = $this->authenticate($this->login, $this->key)->get_container($container);    
+       $cloudFiles = $cloudContainer->get_objects();
+       return $cloudFiles;
     }
 
     /**
@@ -50,7 +50,7 @@ class RackspaceConnect extends CApplicationComponent{
     public function upload($container, $filename){
 
                         // upload file to Rackspace
-                        $cloudContainer = $this->authenticate()->get_container($container);
+                        $cloudContainer = $this->authenticate($this->login, $this->key)->get_container($container);
                         $object = $cloudContainer->create_object($filename);
                         $object->load_from_filename($filename);
     }
